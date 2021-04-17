@@ -146,7 +146,7 @@ export default {
         },
         {
           headerName: 'Total',
-          field: 'Total',
+          field: 'total',
           filter: true,
           width: 175
         }
