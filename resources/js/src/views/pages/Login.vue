@@ -119,7 +119,7 @@ export default {
         email: data.email,
         password: data.password
       })
-      this.$router.push({ name: 'dashboard' }).catch((err) => { console.log(err) })
+      this.$router.push({ name: 'dashboard' })
     },
     onSubmit (e) {
       e.preventDefault()

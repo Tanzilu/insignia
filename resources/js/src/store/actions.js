@@ -59,6 +59,7 @@ const actions = {
       .then((response) => {
         if (response.data.status == 'success') {
           localStorage.setItem('app-buffer', true)
+          localStorage.setItem('name', response.data.userData.name)
           commit('setUserId', response.data.userData.id, { root: true })
           commit('setUserData', response.data.userData, { root: true })
         } else {
@@ -78,6 +79,7 @@ const actions = {
       .then(function (response) {
         if (response.data.status == 'success') {  
           localStorage.removeItem('app-buffer')
+          localStorage.removeItem('name')
           commit('setUserId', null, { root: true })
           commit('clearUserData', { root: true })
         }
