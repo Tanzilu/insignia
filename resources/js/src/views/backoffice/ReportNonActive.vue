@@ -1,0 +1,255 @@
+<template>
+  <div class="vx-row">
+    <div class="vx-col w-full mb-base">
+      <vx-card title="Report Parking Already Out">
+        <!-- TABLE ACTION ROW -->
+        <div class="flex flex-wrap justify-between items-center">
+          <!-- ITEMS PER PAGE -->
+
+          <div class="mb-4 md:mb-0 mr-4 ag-grid-table-actions-left">
+            <datepicker
+              :format="customFormatter"
+              placeholder="Select Date Start"
+              v-model="form.date_start"
+              class="w-full my-2"
+            ></datepicker>
+            <datepicker
+              :format="customFormatter"
+              placeholder="Select Date Finish"
+              v-model="form.date_finish"
+              class="w-full my-2"
+            ></datepicker>
+            <vs-button class="mx-auto my-2" @click="fetchData()"
+              >Filter</vs-button
+            >
+          </div>
+          <div class="mb-4 md:mb-0 mr-4 justify-between"></div>
+
+          <!-- TABLE ACTION COL-2: SEARCH & EXPORT AS CSV -->
+          <div
+            class="flex flex-wrap items-center justify-between ag-grid-table-actions-right"
+          >
+            <vs-dropdown
+              vs-trigger-click
+              class="cursor-pointer mb-4 md:mb-0 mr-4"
+            >
+              <div
+                class="p-4 border border-solid d-theme-border-grey-light rounded-full d-theme-dark-bg cursor-pointer flex items-center justify-between font-medium"
+              >
+                <span class="mr-2"
+                  >{{
+                    currentPage * paginationPageSize - (paginationPageSize - 1)
+                  }}
+                  -
+                  {{
+                    report.length - currentPage * paginationPageSize > 0
+                      ? currentPage * paginationPageSize
+                      : report.length
+                  }}
+                  of {{ report.length }}</span
+                >
+                <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
+              </div>
+              <!-- <vs-button class="btn-drop" type="line" color="primary" icon-pack="feather" icon="icon-chevron-down"></vs-button> -->
+              <vs-dropdown-menu>
+                <vs-dropdown-item @click="gridApi.paginationSetPageSize(20)">
+                  <span>20</span>
+                </vs-dropdown-item>
+                <vs-dropdown-item @click="gridApi.paginationSetPageSize(50)">
+                  <span>50</span>
+                </vs-dropdown-item>
+                <vs-dropdown-item @click="gridApi.paginationSetPageSize(100)">
+                  <span>100</span>
+                </vs-dropdown-item>
+                <vs-dropdown-item @click="gridApi.paginationSetPageSize(150)">
+                  <span>150</span>
+                </vs-dropdown-item>
+              </vs-dropdown-menu>
+            </vs-dropdown>
+            <vs-input
+              class="mb-4 md:mb-0 mr-4"
+              v-model="searchQuery"
+              @input="updateSearchQuery"
+              placeholder="Search..."
+            />
+            <vs-button class="mb-4 md:mb-0" @click="gridApi.exportDataAsCsv()"
+              >Export as CSV</vs-button
+            >
+          </div>
+        </div>
+        <ag-grid-vue
+          ref="agGridTable"
+          :gridOptions="gridOptions"
+          class="ag-theme-material w-100 my-4 ag-grid-table"
+          :columnDefs="columnDefs"
+          :defaultColDef="defaultColDef"
+          :rowData="report"
+          rowSelection="multiple"
+          colResizeDefault="shift"
+          :animateRows="true"
+          :floatingFilter="true"
+          :pagination="true"
+          :suppressExcelExport="true"
+          :paginationPageSize="paginationPageSize"
+          :suppressPaginationPanel="true"
+          :enableRtl="$vs.rtl"
+        >
+        </ag-grid-vue>
+        <vs-pagination
+          :total="totalPages"
+          :max="maxPageNumbers"
+          v-model="currentPage"
+        />
+      </vx-card>
+    </div>
+  </div>
+</template>
+
+<script>
+import { AgGridVue } from "ag-grid-vue";
+import axios from "@/axios.js";
+import Datepicker from "vuejs-datepicker";
+import moment from "moment";
+
+import "@sass/vuexy/extraComponents/agGridStyleOverride.scss";
+
+export default {
+  components: {
+    AgGridVue,
+    Datepicker,
+  },
+  data() {
+    return {
+      form: {
+        date_start: "",
+        date_finish: "",
+      },
+      searchQuery: "",
+      gridOptions: {},
+      maxPageNumbers: 7,
+      gridApi: null,
+      defaultColDef: {
+        sortable: true,
+        editable: true,
+        resizable: true,
+        suppressMenu: true,
+      },
+      columnDefs: [
+        {
+          headerName: "License Plate",
+          field: "license_plate",
+          width: 175,
+          filter: true,
+        },
+        {
+          headerName: "Number Payment",
+          field: "no_payment",
+          filter: true,
+          width: 175,
+        },
+        {
+          headerName: "In",
+          field: "in",
+          filter: true,
+          width: 210,
+        },
+        {
+          headerName: "Out",
+          field: "out",
+          filter: true,
+          width: 210,
+        },
+        {
+          headerName: "Estimate",
+          field: "payment.time",
+          filter: true,
+          width: 175,
+        },
+        {
+          headerName: "Price",
+          field: "payment.price",
+          filter: true,
+          width: 175,
+        },
+      ],
+      report: [],
+    };
+  },
+  watch: {
+    "$store.state.windowWidth"(val) {
+      if (val <= 576) {
+        this.maxPageNumbers = 4;
+        this.gridOptions.columnApi.setColumnPinned("email", null);
+      } else this.gridOptions.columnApi.setColumnPinned("email", "left");
+    },
+  },
+  computed: {
+    paginationPageSize() {
+      if (this.gridApi) return this.gridApi.paginationGetPageSize();
+      else return 50;
+    },
+    totalPages() {
+      if (this.gridApi) return this.gridApi.paginationGetTotalPages();
+      else return 0;
+    },
+    currentPage: {
+      get() {
+        if (this.gridApi) return this.gridApi.paginationGetCurrentPage() + 1;
+        else return 1;
+      },
+      set(val) {
+        this.gridApi.paginationGoToPage(val - 1);
+      },
+    },
+  },
+  created() {
+    this.fetchData();
+  },
+  methods: {
+    updateSearchQuery(val) {
+      this.gridApi.setQuickFilter(val);
+    },
+    fetchData() {
+      let input = {
+        date_start: moment(this.form.date_start).format("yyyy-MM-D"),
+        date_finish: moment(this.form.date_finish).format("yyyy-MM-D"),
+      };
+
+      if (this.form.date_start == "" || this.form.date_finish == "") {
+        axios.get("api/getDataReport").then((response) => {
+          this.report = response.data;
+        });
+      } else {
+        axios
+          .post("api/getDataReportWithFilter", input)
+          .then((response) => {
+            this.report = response.data;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    },
+    customFormatter(date) {
+      return moment(date).format("yyyy-MM-D");
+    },
+  },
+  mounted() {
+    this.gridApi = this.gridOptions.api;
+
+    /* =================================================================
+      NOTE:
+      Header is not aligned properly in RTL version of agGrid table.
+      However, we given fix to this issue. If you want more robust solution please contact them at gitHub
+    ================================================================= */
+    if (this.$vs.rtl) {
+      const header = this.$refs.agGridTable.$el.querySelector(
+        ".ag-header-container"
+      );
+      header.style.left = `-${String(
+        Number(header.style.transform.slice(11, -3)) + 9
+      )}px`;
+    }
+  },
+};
+</script>
