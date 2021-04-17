@@ -114,7 +114,7 @@ export default {
         email: data.email,
         password: data.password
       }).then((res) => {
-        res.status === "success" ? this.$router.push({ name: 'dashboard' }) : console.log(res.status)
+        res.status === "success" ? this.$router.push({ name: 'order' }) : console.log(res.status)
       }, error => {
         console.error(error)
       })

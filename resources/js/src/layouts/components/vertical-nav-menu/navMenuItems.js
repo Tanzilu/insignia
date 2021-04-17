@@ -10,9 +10,9 @@
 
 export default [
   {
-    url: "/admin/dashboard",
-    name: "Dashboard",
-    slug: "dashboard",
-    icon: "HomeIcon",
+    url: '/admin/order',
+    name: 'Order Menu',
+    slug: 'order_menu',
+    icon: 'HomeIcon'
   }
 ]

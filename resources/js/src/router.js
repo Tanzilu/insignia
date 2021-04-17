@@ -34,8 +34,8 @@ const router = new Router({
         // Theme Routes
         // =============================================================================
         {
-          path: '/admin/dashboard',
-          name: 'dashboard',
+          path: '/admin/order',
+          name: 'order',
           component: () => import('@/views/backoffice/Home.vue')
         }
       ]
