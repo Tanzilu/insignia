@@ -27,7 +27,7 @@ const router = new Router({
     // MAIN LAYOUT ROUTES
     // =============================================================================
       path: '/admin',
-      component: () => import('./layouts/main/Main.vue'),
+      component: () => import('@/layouts/main/Main.vue'),
       meta: { requiresAuth: true},
       children: [
         // =============================================================================
@@ -36,19 +36,8 @@ const router = new Router({
         {
           path: '/admin/dashboard',
           name: 'dashboard',
-          component: () => import('./views/backoffice/Home.vue')
-        },
-        {
-          path: '/admin/reportNonActive',
-          name: 'reportNonActive',
-          component: () => import('./views/backoffice/ReportNonActive.vue')
-        },
-        {
-          path: '/admin/reportActive',
-          name: 'reportActive',
-          component: () => import('./views/backoffice/ReportActive.vue')
+          component: () => import('@/views/backoffice/Home.vue')
         }
-      
       ]
     },
     // =============================================================================
@@ -62,7 +51,7 @@ const router = new Router({
         // PAGES
         // =============================================================================
         {
-          path: '/login',
+          path: '/',
           name: 'login',
           component: () => import('@/views/pages/Login.vue')
         },
@@ -70,11 +59,6 @@ const router = new Router({
           path: '/pages/error-404',
           name: 'page-error-404',
           component: () => import('@/views/pages/Error404.vue')
-        },
-        {
-          path: '/',
-          name: 'home',
-          component: () => import('@/views/frontoffice/Home.vue')
         }
       ]
     },
@@ -98,7 +82,7 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     const auth = store.getters.isAuth
     if (!auth) {
-      next({name: 'home'})
+      next({name: 'login'})
     } else {
       next()
     }

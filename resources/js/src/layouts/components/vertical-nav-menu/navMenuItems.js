@@ -14,25 +14,5 @@ export default [
     name: "Dashboard",
     slug: "dashboard",
     icon: "HomeIcon",
-  },
-  {
-    url: null ,
-    name: "Report",
-    slug: "report",
-    icon: "FileIcon",
-    submenu: [
-      {
-        url: "/admin/reportNonActive",
-        name: 'Non Active Parking',
-        slug: 'non-active-parking',
-        i18n: 'List'
-      },
-      {
-        url: "/admin/reportActive",
-        name: 'Active Parking',
-        slug: 'active-parking',
-        i18n: 'List'
-      }
-    ]
   }
 ]

@@ -20,7 +20,7 @@
   >
     <v-nav-menu
       :navMenuItems="navMenuItems"
-      title="Parking"
+      title="Insignia"
       parent=".layout--main"
     />
 

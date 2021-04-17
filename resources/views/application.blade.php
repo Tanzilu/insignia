@@ -8,7 +8,7 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <!-- <link rel="icon" href="<%= BASE_URL %>favicon.ico"> -->
 
-  <title>Parking App</title>
+  <title>Insignia App</title>
   <!-- Styles -->
   <link rel="stylesheet" href="{{ asset(mix('css/main.css')) }}">
   <link rel="stylesheet" href="{{ asset(mix('css/iconfont.css')) }}">

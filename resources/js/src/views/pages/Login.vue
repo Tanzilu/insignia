@@ -119,7 +119,7 @@ export default {
         email: data.email,
         password: data.password,
       });
-      this.$router.push({ path: "/admin/dashboard" });
+      this.$router.push({ name: "dashboard" });
     },
     onSubmit(e) {
       e.preventDefault();

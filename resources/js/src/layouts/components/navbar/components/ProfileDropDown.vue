@@ -46,7 +46,7 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch("logout");
-      this.$router.push({ name: "home" });
+      this.$router.push({ name: "login" });
       // localStorage.removeItem("userInfo");
 
       // // This is just for demo Purpose. If user clicks on logout -> redirect

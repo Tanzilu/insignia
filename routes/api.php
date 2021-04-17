@@ -22,18 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('login', 'UserLoginController@userLogin');
 Route::post('logout', 'UserLoginController@logout');
 
+//API Order
+Route::get('getOrders', 'OrderController@getOrders');
+Route::post('createOrder', 'OrderController@createOrder');
 
-// API frontoffice
-Route::post('enterParking', 'ParkingController@enterParking');
-Route::put('exitParking', 'ParkingController@exitParking');
-Route::get('getPayment/{id}', 'ParkingController@getPaymentByNoPayment');
-
-//API Chart
-Route::get('getDataPerMonth', 'ChartController@getDataPerMonth');
-Route::get('getDataPerDay', 'ChartController@getDataPerDay');
-Route::get('getDataPerYear', 'ChartController@getDataPerYear');
-
-// API Report
-Route::get('getDataReport', 'ReportController@getDataReport');
-Route::post('getDataReportWithFilter', 'ReportController@getDataReportWithFilter');
-Route::get('getDataReportActive', 'ReportController@getDataReportActive');
