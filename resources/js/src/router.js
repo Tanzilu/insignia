@@ -79,8 +79,8 @@ router.afterEach(() => {
 })
 
 router.beforeEach((to, from, next) => {
+  const auth = store.getters.isAuth
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    const auth = store.getters.isAuth
     if (!auth) {
       next({name: 'login'})
     } else {

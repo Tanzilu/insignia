@@ -88,44 +88,44 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapGetters, mapState } from "vuex";
+import { mapActions, mapMutations, mapGetters, mapState } from 'vuex'
 
 export default {
-  data() {
+  data () {
     return {
       form: {
-        email: "",
-        password: "",
+        email: '',
+        password: ''
       },
-      backgroundLoading: "primary",
-      colorLoading: "#fff",
-    };
+      backgroundLoading: 'primary',
+      colorLoading: '#fff'
+    }
   },
   computed: {
-    ...mapGetters(["isAuth"]),
-    ...mapState(["error"]),
+    ...mapGetters(['isAuth']),
+    ...mapState(['error'])
   },
   methods: {
     // ...mapActions(["checkLogin"]),
-    ...mapMutations(["clearError"]),
-    login(data) {
+    ...mapMutations(['clearError']),
+    login (data) {
       this.$vs.loading({
         background: this.backgroundLoading,
         color: this.colorLoading,
-        container: "#button-with-loading",
-        scale: 0.45,
-      });
-      this.$store.dispatch("checkLogin", {
+        container: '#button-with-loading',
+        scale: 0.45
+      })
+      this.$store.dispatch('checkLogin', {
         email: data.email,
-        password: data.password,
-      });
-      this.$router.push({ name: "dashboard" });
+        password: data.password
+      })
+      this.$router.push({ name: 'dashboard' }).catch((err) => { console.log(err) })
     },
-    onSubmit(e) {
-      e.preventDefault();
-    },
-  },
-};
+    onSubmit (e) {
+      e.preventDefault()
+    }
+  }
+}
 </script>
 <style lang="stylus">
 .fill-row {
