@@ -109,17 +109,16 @@ export default {
     // ...mapActions(["checkLogin"]),
     ...mapMutations(['clearError']),
     login (data) {
-      this.$vs.loading({
-        background: this.backgroundLoading,
-        color: this.colorLoading,
-        container: '#button-with-loading',
-        scale: 0.45
-      })
+   
       this.$store.dispatch('checkLogin', {
         email: data.email,
         password: data.password
+      }).then((res) => {
+        res.status === "success" ? this.$router.push({ name: 'dashboard' }) : console.log(res.status)
+      }, error => {
+        console.error(error)
       })
-      this.$router.push({ name: 'dashboard' })
+     
     },
     onSubmit (e) {
       e.preventDefault()

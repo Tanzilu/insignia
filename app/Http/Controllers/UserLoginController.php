@@ -21,6 +21,7 @@ class UserLoginController extends Controller
 
             return response()->json(['status' => 'success', 'userData' => $myState], 200);
         }
+        
         return response()->json(['status' => $status]);
     }
 

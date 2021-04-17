@@ -79,7 +79,7 @@ router.afterEach(() => {
 })
 
 router.beforeEach((to, from, next) => {
-  const auth = store.getters.isAuth
+  const auth = localStorage.getItem('app-buffer')
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (!auth) {
       next({name: 'login'})
