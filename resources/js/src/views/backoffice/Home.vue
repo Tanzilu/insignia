@@ -20,11 +20,11 @@
                   }}
                   -
                   {{
-                    report.length - currentPage * paginationPageSize > 0
+                    orders.length - currentPage * paginationPageSize > 0
                       ? currentPage * paginationPageSize
-                      : report.length
+                      : orders.length
                   }}
-                  of {{ report.length }}</span
+                  of {{ orders.length }}</span
                 >
                 <feather-icon icon="ChevronDownIcon" svgClasses="h-4 w-4" />
               </div>
@@ -57,6 +57,7 @@
               @input="updateSearchQuery"
               placeholder="Search..."
             />
+            <create-order></create-order>
           </div>
         </div>
         <ag-grid-vue
@@ -65,7 +66,7 @@
           class="ag-theme-material w-100 my-4 ag-grid-table"
           :columnDefs="columnDefs"
           :defaultColDef="defaultColDef"
-          :rowData="report"
+          :rowData="orders"
           rowSelection="multiple"
           colResizeDefault="shift"
           :animateRows="true"
@@ -88,18 +89,21 @@
 </template>
 
 <script>
-import { AgGridVue } from "ag-grid-vue";
-import axios from "@/axios.js";
+import { AgGridVue } from 'ag-grid-vue'
+import axios from '@/axios.js'
+import CreateOrder from './CreateOrder.vue'
 
-import "@sass/vuexy/extraComponents/agGridStyleOverride.scss";
+
+import '@sass/vuexy/extraComponents/agGridStyleOverride.scss'
 
 export default {
   components: {
     AgGridVue,
+    CreateOrder
   },
-  data() {
+  data () {
     return {
-      searchQuery: "",
+      searchQuery: '',
       gridOptions: {},
       maxPageNumbers: 7,
       gridApi: null,
@@ -107,96 +111,96 @@ export default {
         sortable: true,
         editable: true,
         resizable: true,
-        suppressMenu: true,
+        suppressMenu: true
       },
       columnDefs: [
         {
-          headerName: "Invoice Number",
-          field: "invoice",
+          headerName: 'Invoice Number',
+          field: 'invoice',
           width: 175,
-          filter: true,
+          filter: true
         },
         {
-          headerName: "Date",
-          field: "created_at",
+          headerName: 'Date',
+          field: 'created_at',
           filter: true,
-          width: 200,
+          width: 200
         },
         {
-          headerName: "Customer",
-          field: "email",
+          headerName: 'Customer',
+          field: 'email',
           filter: true,
-          width: 230,
+          width: 230
         },
         {
-          headerName: "Payment",
-          field: "payment_status",
+          headerName: 'Payment',
+          field: 'payment_status',
           filter: true,
-          width: 175,
+          width: 175
         },
         {
-          headerName: "Fulfillment Status",
-          field: "fulfillment_status",
+          headerName: 'Fulfillment Status',
+          field: 'fulfillment_status',
           filter: true,
-          width: 200,
+          width: 200
         },
         {
-          headerName: "Total",
-          field: "total",
+          headerName: 'Total',
+          field: 'Total',
           filter: true,
-          width: 175,
-        },
+          width: 175
+        }
       ],
-      report: [],
-    };
+      orders: []
+    }
   },
   watch: {
-    "$store.state.windowWidth"(val) {
+    '$store.state.windowWidth' (val) {
       if (val <= 576) {
-        this.maxPageNumbers = 4;
-        this.gridOptions.columnApi.setColumnPinned("email", null);
-      } else this.gridOptions.columnApi.setColumnPinned("email", "left");
-    },
+        this.maxPageNumbers = 4
+        this.gridOptions.columnApi.setColumnPinned('email', null)
+      } else this.gridOptions.columnApi.setColumnPinned('email', 'left')
+    }
   },
   computed: {
-    paginationPageSize() {
-      if (this.gridApi) return this.gridApi.paginationGetPageSize();
-      else return 50;
+    paginationPageSize () {
+      if (this.gridApi) return this.gridApi.paginationGetPageSize()
+      else return 50
     },
-    totalPages() {
-      if (this.gridApi) return this.gridApi.paginationGetTotalPages();
-      else return 0;
+    totalPages () {
+      if (this.gridApi) return this.gridApi.paginationGetTotalPages()
+      else return 0
     },
     currentPage: {
-      get() {
-        if (this.gridApi) return this.gridApi.paginationGetCurrentPage() + 1;
-        else return 1;
+      get () {
+        if (this.gridApi) return this.gridApi.paginationGetCurrentPage() + 1
+        else return 1
       },
-      set(val) {
-        this.gridApi.paginationGoToPage(val - 1);
-      },
-    },
+      set (val) {
+        this.gridApi.paginationGoToPage(val - 1)
+      }
+    }
   },
-  created() {
-    this.fetchData();
+  created () {
+    this.fetchData()
   },
   methods: {
-    updateSearchQuery(val) {
-      this.gridApi.setQuickFilter(val);
+    updateSearchQuery (val) {
+      this.gridApi.setQuickFilter(val)
     },
-    fetchData() {
+    fetchData () {
       axios
-        .get("api/getOrders")
+        .get('api/getOrders')
         .then((response) => {
-          this.report = response.data;
+          this.orders = response.data.orders
         })
         .catch((error) => {
-          console.log(error);
-        });
-    },
+          console.log(error)
+        })
+    }
   },
-  mounted() {
-    this.gridApi = this.gridOptions.api;
+  mounted () {
+    this.gridApi = this.gridOptions.api
 
     /* =================================================================
       NOTE:
@@ -205,12 +209,12 @@ export default {
     ================================================================= */
     if (this.$vs.rtl) {
       const header = this.$refs.agGridTable.$el.querySelector(
-        ".ag-header-container"
-      );
+        '.ag-header-container'
+      )
       header.style.left = `-${String(
         Number(header.style.transform.slice(11, -3)) + 9
-      )}px`;
+      )}px`
     }
-  },
-};
+  }
+}
 </script>

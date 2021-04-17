@@ -17,8 +17,8 @@ class OrderController extends Controller
 
     public function createOrder(OrderRequest $request)
     {
+        
         $order = $request->all();
-
         $order['invoice'] = Str::random('8');
 
         Order::create($order);
