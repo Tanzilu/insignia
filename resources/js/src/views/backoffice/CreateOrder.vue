@@ -1,6 +1,6 @@
 <template>
   <div class="centerx"> 
-    <vs-button @click="popupActivo=true" color="primary" type="border">Open Default popup</vs-button>
+    <vs-button @click="popupActivo=true" color="primary" type="border">Create Order</vs-button>
     <vs-popup class="holamundo"  title="Lorem ipsum dolor sit amet" :active.sync="popupActivo">
         <label class="my-5" for="Email">
             Email
