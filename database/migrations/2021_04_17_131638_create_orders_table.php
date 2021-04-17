@@ -19,7 +19,7 @@ class CreateOrdersTable extends Migration
             $table->string('email');;
             $table->enum('payment_status', ['Unpaid', 'Fully paid']);
             $table->enum('fulfillment_status', ['Unfulfilled', 'Fulfilled']);
-            $table->bigInteger('Total');
+            $table->bigInteger('total');
             $table->timestamps();
         });
     }

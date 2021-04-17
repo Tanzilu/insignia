@@ -2,46 +2,58 @@
   <div class="centerx"> 
     <vs-button @click="popupActivo=true" color="primary" type="border">Create Order</vs-button>
     <vs-popup class="holamundo"  title="Lorem ipsum dolor sit amet" :active.sync="popupActivo">
-        <label class="my-5" for="Email">
-            Email
-        </label>
+       
+        <div>
+            <label class="my-5" for="Email">
+                Email
+            </label>
+            <vs-input
+                class="w-full my-5"
+                v-model="email"
+                placeholder="Email"
+                name="email"
+                v-validate="{
+                    required: true,
+                    email: true
+                }"
+            />
+            <span class="text-danger text-sm" v-show="errors.has('email')">
+                {{ errors.first("email") }}
+            </span>
+        </div>
 
-        <vs-input
-            class="w-full my-5"
-            v-model="email"
-            placeholder="Email"
-            name="email"
-            v-validate="{
-                required: true,
-            }"
-        />
+        <div>
+            <label class="my-5" for="Payment Status">
+                Payment Status
+            </label>
+            <v-select v-model="payment_status" class="my-5" :options="['Unpaid', 'Fully paid' ]"></v-select>
+        </div>
 
-        <span class="text-danger text-sm" v-show="errors.has('email')">
-            {{ errors.first("email") }}
-        </span>
+        <div>
+            <label class="my-5" for="Fulfillment Status">
+                Fulfillment Status
+            </label>
+            <v-select v-model="fulfillment_status" class="my-5" :options="['Unfulfillment', 'Fulfillment' ]"></v-select>
+        </div>
 
-        <label class="my-5" for="Payment Status">
-            Payment Status
-        </label>
-        <v-select v-model="payment_status" class="my-5" :options="['Unpaid', 'Fully paid' ]"></v-select>
-
-        <label class="my-5" for="Fulfillment Status">
-            Fulfillment Status
-        </label>
-        <v-select v-model="fulfillment_status" class="my-5" :options="['Unfulfillment', 'Fulfillment' ]"></v-select>
-
-        <label class="my-5" for="Total">
-            Total
-        </label>
-        <vs-input
-            class="w-full my-5"
-            v-model="total"
-            placeholder="Total"
-            name="total"
-            v-validate="{
-                required: true,
-            }"
-        />
+        <div>
+            <label class="my-5" for="Total">
+                Total
+            </label>
+            <vs-input
+                class="w-full my-5"
+                v-model="total"
+                placeholder="Total"
+                name="total"
+                v-validate="{
+                    required: true,
+                    numeric: true
+                }"
+            />
+            <span class="text-danger text-sm" v-show="errors.has('total')">
+                {{ errors.first("total") }}
+            </span>
+        </div>
 
         <vs-button class="mr-3 my-2" v-on:click="submit">Submit</vs-button>
     </vs-popup>
