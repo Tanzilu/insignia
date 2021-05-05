@@ -14,5 +14,11 @@ export default [
     name: 'Order Menu',
     slug: 'order_menu',
     icon: 'HomeIcon'
+  },
+  {
+    url: '/admin/scraping',
+    name: 'Scraping Menu',
+    slug: 'scraping_menu',
+    icon: 'HomeIcon'
   }
 ]

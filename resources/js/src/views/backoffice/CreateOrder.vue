@@ -96,6 +96,7 @@ export default {
             color: 'success',
             position: 'top-right'
           })
+          this.$emit('fetchData')
           this.popupActivo = false         
         })
         .catch((error) => {

@@ -37,6 +37,11 @@ const router = new Router({
           path: '/admin/order',
           name: 'order',
           component: () => import('@/views/backoffice/Home.vue')
+        },
+        {
+          path: '/admin/scraping',
+          name: 'scraping',
+          component: () => import('@/views/backoffice/Scraping.vue')
         }
       ]
     },
