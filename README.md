@@ -38,7 +38,7 @@ php artisan db:seed --class=UserSeeder
 ## Project Run
 ```sh
 # Run the project
-php artisan server 
+php artisan serve
 
 # or if u use laragon just type url as your folder name
 
