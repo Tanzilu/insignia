@@ -17,6 +17,8 @@ npm install
 
 composer install
 
+npm run dev
+
 ```
 
 ## Setting Your Env
